@@ -35,6 +35,10 @@ def run_waterEntropy(args):
 
     # load topology and coordinates
     u = Universe(args.file_topology, args.file_coords)
+    atom = u.select_atoms("water and mass 16")
+    atom_EPW = u.select_atoms("water and mass 0")
+    atom.charges = atom_EPW.charges
+    atom_EPW.charges = 0
     # interfacial waters
     Sorient_dict, covariances, vibrations, frame_solvent_indices, n_frames = GetSolvent.get_interfacial_water_orient_entropy(u, args.start, args.end, args.step, args.temperature, args.parallel, client)
     print(f"Number of frames analysed: {n_frames}")
